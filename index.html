@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <!-- Meta tag viewport untuk desain responsif -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Jaringan Komputer dan Internet</title>
+    
+    <!-- Awal dari CSS Internal -->
+    <style>
+        /* Pengaturan Dasar dan Variabel Warna */
+        :root {
+            --warna-primer: #007bff; /* Biru cerah */
+            --warna-primer-gelap: #0056b3;
+            --warna-sekunder: #e6f2ff; /* Biru sangat muda */
+            --warna-putih: #ffffff;
+            --warna-teks: #333;
+            --warna-teks-abu: #555;
+            --warna-latar: #f8faff; /* Latar belakang utama (putih kebiruan) */
+            --warna-sukses: #28a745;
+            --warna-sukses-latar: #d4edda;
+            --warna-gagal: #dc3545;
+            --warna-gagal-latar: #f8d7da;
+        }
+
+        /* Reset CSS dasar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--warna-latar);
+            color: var(--warna-teks);
+            line-height: 1.6;
+        }
+
+        /* ----- Header dan Navigasi ----- */
+        header {
+            background-color: var(--warna-putih);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky; /* Membuat navigasi tetap di atas saat di-scroll */
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--warna-primer);
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--warna-teks-abu);
+            font-weight: 600;
+            font-size: 1rem;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
+            /* Transisi halus untuk navigasi */
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        nav a:hover,
+        nav a.aktif { /* Kelas 'aktif' akan ditambahkan oleh JavaScript */
+            color: var(--warna-primer);
+            border-bottom-color: var(--warna-primer);
+        }
+
+        /* Tombol menu mobile (hamburger) */
+        .menu-toggle {
+            display: none; /* Sembunyi di desktop */
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--warna-primer);
+        }
+
+        /* ----- Konten Utama dan Halaman ----- */
+        main {
+            /* Padding atas dan bawah 2rem, 5% kiri dan kanan */
+            padding: 2rem 5%; 
+            max-width: 1000px;
+            margin: 0 auto; /* Tengah secara horizontal */
+        }
+
+        .halaman {
+            background-color: var(--warna-putih);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 2.5rem;
+            display: none; /* Sembunyikan semua halaman secara default */
+        }
+
+        .halaman.aktif {
+            display: block; /* Tampilkan halaman yang aktif */
+            /* Animasi fade-in sederhana */
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ----- Halaman Beranda ----- */
+        #beranda {
+            text-align: center;
+        }
+
+        #beranda h1 {
+            font-size: 2.8rem;
+            color: var(--warna-primer);
+            margin-bottom: 1rem;
+        }
+
+        #beranda .subjudul {
+            font-size: 1.15rem;
+            color: var(--warna-teks-abu);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Ilustrasi Jaringan (SVG) */
+        .ilustrasi-jaringan {
+            width: 100%;
+            max-width: 300px;
+            margin: 2rem auto;
+            color: var(--warna-primer);
+        }
+
+        /* Tombol Umum */
+        .tombol {
+            background-color: var(--warna-primer);
+            color: var(--warna-putih);
+            border: none;
+            padding: 0.9rem 1.8rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            /* Efek hover pada tombol */
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        .tombol:hover {
+            background-color: var(--warna-primer-gelap);
+            transform: translateY(-3px); /* Efek sedikit terangkat */
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+        }
+        
+        /* ----- Halaman Materi ----- */
+        #materi h2, #kuis h2 {
+            text-align: center;
+            color: var(--warna-primer);
+            margin-bottom: 2.5rem;
+            font-size: 2.2rem;
+        }
+
+        .sub-materi {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1.5rem;
+        }
+
+        .sub-materi:last-child {
+            border-bottom: none;
+        }
+
+        .sub-materi h3 {
+            color: var(--warna-primer-gelap);
+            margin-bottom: 0.75rem;
+            font-size: 1.4rem;
+        }
+
+        .sub-materi p, .sub-materi li {
+            color: var(--warna-teks-abu);
+            margin-bottom: 0.5rem;
+        }
+
+        .sub-materi ul {
+            padding-left: 25px;
+            margin-top: 0.5rem;
+        }
+
+        /* ----- Halaman Kuis ----- */
+        #kuisForm {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .pertanyaan {
+            margin-bottom: 2rem;
+            background: #fafcff;
+            border: 1px solid #e0e8ff;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .pertanyaan p {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .pertanyaan label {
+            display: block; /* Membuat setiap pilihan di baris baru */
+            margin-bottom: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .pertanyaan label:hover {
+            background-color: var(--warna-sekunder);
+        }
+        
+        .pertanyaan input[type="radio"] {
+            margin-right: 10px;
+            transform: translateY(1px);
+        }
+
+        /* Tombol periksa kuis */
+        #kuis .tombol {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 2rem auto 0 auto;
+            text-align: center;
+        }
+
+        /* Hasil Kuis */
+        #hasilKuis {
+            margin-top: 2.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 8px;
+            display: none; /* Sembunyi sampai tombol diklik */
+        }
+
+        /* Kelas dinamis dari JS untuk hasil kuis */
+        #hasilKuis.sukses {
+            background-color: var(--warna-sukses-latar);
+            color: var(--warna-sukses);
+            border: 1px solid var(--warna-sukses);
+        }
+
+        #hasilKuis.gagal {
+            background-color: var(--warna-gagal-latar);
+            color: var(--warna-gagal);
+            border: 1px solid var(--warna-gagal);
+        }
+
+        /* ----- Footer ----- */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            background-color: #333;
+            color: var(--warna-putih);
+            font-size: 0.9rem;
+        }
+
+        /* ----- Desain Responsif (Mobile) ----- */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1rem 5%;
+            }
+
+            .header-top {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+
+            .menu-toggle {
+                display: block; /* Tampilkan tombol hamburger */
+            }
+
+            nav {
+                width: 100%;
+                max-height: 0; /* Sembunyikan menu */
+                overflow: hidden;
+                transition: max-height 0.4s ease-out;
+            }
+
+            nav.terbuka {
+                max-height: 300px; /* Tampilkan menu saat diklik */
+            }
+
+            nav ul {
+                flex-direction: column;
+                margin-top: 1rem;
+                gap: 0.5rem;
+            }
+
+            nav a {
+                display: block;
+                padding: 0.75rem 0;
+                border-bottom: none;
+            }
+            
+            nav a:hover, nav a.aktif {
+                color: var(--warna-primer);
+                background-color: var(--warna-sekunder);
+                border-radius: 5px;
+                padding-left: 10px;
+            }
+
+            main {
+                padding: 1.5rem 4%;
+            }
+
+            .halaman {
+                padding: 1.5rem;
+            }
+
+            #beranda h1 {
+                font-size: 2.2rem;
+            }
+
+            #beranda .subjudul {
+                font-size: 1rem;
+            }
+
+            #materi h2, #kuis h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+    <!-- Akhir dari CSS Internal -->
+</head>
+<body>
+
+    <!-- Header dan Navigasi -->
+    <header>
+        <div class="header-top">
+            <a href="#" class="logo" onclick="tampilkanHalaman('beranda')">BelajarJaringan.id</a>
+            <!-- Tombol Hamburger untuk Mobile -->
+            <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">
+                &#9776; <!-- Karakter hamburger -->
+            </button>
+        </div>
+        <nav id="nav-menu">
+            <ul>
+                <!-- Link navigasi memanggil fungsi JavaScript 'tampilkanHalaman' -->
+                <li><a href="#" class="nav-link aktif" onclick="tampilkanHalaman('beranda', this)">Beranda</a></li>
+                <li><a href="#" class="nav-link" onclick="tampilkanHalaman('materi', this)">Materi</a></li>
+                <li><a href="#" class="nav-link" onclick="tampilkanHalaman('kuis', this)">Kuis</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Konten Utama -->
+    <main>
+
+        <!-- Halaman Beranda (Default) -->
+        <section id="beranda" class="halaman aktif">
+            <!--  -->
+            <svg class="ilustrasi-jaringan" viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 20C55.8172 20 20 55.8172 20 100C20 144.183 55.8172 180 100 180C144.183 180 180 144.183 180 100C180 55.8172 144.183 20 100 20Z" stroke="currentColor" stroke-width="4" stroke-opacity="0.2"/>
+                <circle cx="100" cy="100" r="10" fill="currentColor"/>
+                <circle cx="100" cy="30" r="7" fill="currentColor" fill-opacity="0.8"/>
+                <circle cx="40" cy="60" r="7" fill="currentColor" fill-opacity="0.8"/>
+                <circle cx="160" cy="60" r="7" fill="currentColor" fill-opacity="0.8"/>
+                <circle cx="40" cy="140" r="7" fill="currentColor" fill-opacity="0.8"/>
+                <circle cx="160" cy="140" r="7" fill="currentColor" fill-opacity="0.8"/>
+                <path d="M100 90V40" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
+                <path d="M100 93.5L43.5 63.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
+                <path d="M100 93.5L156.5 63.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
+                <path d="M100 106.5L43.5 136.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
+                <path d="M100 106.5L156.5 136.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
+            </svg>
+            
+            <h1>Belajar Jaringan Komputer dan Internet</h1>
+            <p class="subjudul">Media belajar interaktif untuk memahami dasar-dasar jaringan komputer dan internet.</p>
+            <button class="tombol" onclick="tampilkanHalaman('materi')">Mulai Belajar</button>
+        </section>
+
+        <!-- Halaman Materi Pembelajaran -->
+        <section id="materi" class="halaman">
+            <h2>Materi Pembelajaran</h2>
+            
+            <article class="sub-materi">
+                <h3>1. Pengertian Jaringan Komputer</h3>
+                <p>Jaringan komputer adalah sekumpulan komputer yang saling terhubung dan dapat saling berbagi data, informasi, maupun sumber daya.</p>
+                <p><strong>Tujuan:</strong> mempermudah komunikasi, berbagi file, dan efisiensi kerja.</p>
+            </article>
+
+            <article class="sub-materi">
+                <h3>2. Komponen Jaringan Komputer</h3>
+                <ul>
+                    <li><strong>Perangkat keras:</strong> Router, Switch, Hub, Modem, Access Point, Kabel jaringan, NIC (Network Interface Card).</li>
+                    <li><strong>Perangkat lunak:</strong> Sistem operasi jaringan (misalnya Windows Server, Linux), protokol jaringan (TCP/IP, HTTP, FTP, DNS).</li>
+                    <li><strong>Media transmisi:</strong> Kabel UTP, fiber optik, gelombang radio (Wi-Fi).</li>
+                </ul>
+            </article>
+
+            <article class="sub-materi">
+                <h3>3. Jenis-Jenis Jaringan Berdasarkan Jangkauan</h3>
+                <ul>
+                    <li><strong>LAN (Local Area Network)</strong> – jaringan kecil di satu gedung atau sekolah.</li>
+                    <li><strong>MAN (Metropolitan Area Network)</strong> – mencakup satu kota atau area besar.</li>
+                    <li><strong>WAN (Wide Area Network)</strong> – jaringan antarnegara, contoh: internet.</li>
+                    <li><strong>PAN (Personal Area Network)</strong> – jaringan pribadi, misalnya hotspot HP ke laptop.</li>
+                </ul>
+            </article>
+
+            <article class="sub-materi">
+                <h3>4. Topologi Jaringan</h3>
+                <ul>
+                    <li><strong>Topologi Bus:</strong> Semua komputer dihubungkan dalam satu jalur utama.</li>
+                    <li><strong>Topologi Star:</strong> Setiap komputer terhubung ke satu perangkat pusat (hub/switch).</li>
+                    <li><strong>Topologi Ring:</strong> Komputer saling terhubung membentuk lingkaran.</li>
+                    <li><strong>Topologi Mesh:</strong> Setiap komputer terhubung langsung ke semua komputer lain.</li>
+                    <li><strong>Topologi Tree:</strong> Gabungan topologi star dan bus.</li>
+                </ul>
+            </article>
+
+            <article class="sub-materi">
+                <h3>5. Protokol Jaringan</h3>
+                <ul>
+                    <li><strong>TCP/IP:</strong> Dasar komunikasi data di internet.</li>
+                    <li><strong>HTTP/HTTPS:</strong> Protokol transfer halaman web.</li>
+                    <li><strong>FTP:</strong> Untuk mengirim file antar komputer.</li>
+                    <li><strong>DNS:</strong> Mengubah nama domain menjadi alamat IP.</li>
+                    <li><strong>SMTP/POP3/IMAP:</strong> Untuk layanan email.</li>
+                </ul>
+            </article>
+            
+            <article class="sub-materi">
+                <h3>6. Pengertian Internet dan Cara Kerjanya</h3>
+                <p>Internet adalah jaringan global yang menghubungkan jutaan komputer di seluruh dunia.</p>
+                <p><strong>Cara kerja:</strong> Data dikirim dalam bentuk paket melalui router dan server menggunakan protokol TCP/IP.</p>
+            </article>
+
+            <article class="sub-materi">
+                <h3>7. Layanan Internet Populer</h3>
+                <ul>
+                    <li>Web (WWW)</li>
+                    <li>Email</li>
+                    <li>FTP</li>
+                    <li>Media sosial</li>
+                    <li>Cloud storage</li>
+                    <li>Video conference</li>
+                </ul>
+            </article>
+            
+            <article class="sub-materi">
+                <h3>8. Keamanan Jaringan dan Internet</h3>
+                <ul>
+                    <li>Gunakan firewall, antivirus, dan password kuat.</li>
+                    <li>Hindari phishing, malware, dan penipuan online.</li>
+                    <li>Pentingnya enkripsi dan backup data.</li>
+                </ul>
+            </article>
+
+            <article class="sub-materi">
+                <h3>9. Dampak Penggunaan Internet</h3>
+                <ul>
+                    <li><strong>Positif:</strong> Mempermudah komunikasi, pendidikan, bisnis, dan hiburan.</li>
+                    <li><strong>Negatif:</strong> Cyberbullying, kecanduan, kebocoran data pribadi.</li>
+                </ul>
+            </article>
+
+        </section>
+
+        <!-- Halaman Kuis Interaktif -->
+        <section id="kuis" class="halaman">
+            <h2>Kuis Interaktif</h2>
+            <p style="text-align: center; margin-bottom: 2rem; color: var(--warna-teks-abu);">Uji pemahaman Anda tentang materi yang telah dipelajari!</p>
+            
+            <form id="kuisForm">
+                <!-- Soal 1 -->
+                <div class="pertanyaan">
+                    <p>1. Jaringan komputer yang mencakup satu kota disebut …</p>
+                    <label><input type="radio" name="q1" value="a"> LAN</label>
+                    <label><input type="radio" name="q1" value="b"> MAN</label>
+                    <label><input type="radio" name="q1" value="c"> WAN</label>
+                    <label><input type="radio" name="q1" value="d"> PAN</label>
+                </div>
+                
+                <!-- Soal 2 -->
+                <div class="pertanyaan">
+                    <p>2. Protokol untuk mengirim halaman web adalah …</p>
+                    <label><input type="radio" name="q2" value="a"> FTP</label>
+                    <label><input type="radio" name="q2" value="b"> HTTP</label>
+                    <label><input type="radio" name="q2" value="c"> SMTP</label>
+                    <label><input type="radio" name="q2" value="d"> POP3</label>
+                </div>
+
+                <!-- Soal 3 -->
+                <div class="pertanyaan">
+                    <p>3. Jaringan kecil yang biasanya berada di satu gedung atau sekolah disebut …</p>
+                    <label><input type="radio" name="q3" value="a"> LAN</label>
+                    <label><input type="radio" name="q3" value="b"> MAN</label>
+                    <label><input type="radio" name="q3" value="c"> WAN</label>
+                    <label><input type="radio" name="q3" value="d"> Internet</label>
+                </div>
+
+                <!-- Soal 4 -->
+                <div class="pertanyaan">
+                    <p>4. Topologi yang menghubungkan setiap komputer ke satu perangkat pusat (hub/switch) adalah …</p>
+                    <label><input type="radio" name="q4" value="a"> Bus</label>
+                    <label><input type="radio" name="q4" value="b"> Ring</label>
+                    <label><input type="radio" name="q4" value="c"> Star</label>
+                    <label><input type="radio" name="q4" value="d"> Mesh</label>
+                </div>
+
+                <!-- Soal 5 -->
+                <div class="pertanyaan">
+                    <p>5. Protokol yang digunakan untuk layanan email adalah …</p>
+                    <label><input type="radio" name="q5" value="a"> HTTP dan FTP</label>
+                    <label><input type="radio" name="q5" value="b"> DNS dan TCP/IP</label>
+                    <label><input type="radio" name="q5" value="c"> SMTP, POP3, IMAP</label>
+                    <label><input type="radio" name="q5" value="d"> LAN dan WAN</label>
+                </div>
+                
+                <!-- Soal 6 -->
+                <div class="pertanyaan">
+                    <p>6. Jaringan global yang menghubungkan jutaan komputer di seluruh dunia disebut …</p>
+                    <label><input type="radio" name="q6" value="a"> LAN</label>
+                    <label><input type="radio" name="q6" value="b"> Intranet</label>
+                    <label><input type="radio" name="q6" value="c"> MAN</label>
+                    <label><input type="radio" name="q6" value="d"> Internet</label>
+                </div>
+
+                <!-- Soal 7 -->
+                <div class="pertanyaan">
+                    <p>7. Apa kepanjangan dari DNS?</p>
+                    <label><input type="radio" name="q7" value="a"> Data Network System</label>
+                    <label><input type="radio" name="q7" value="b"> Dynamic Naming Server</label>
+                    <label><input type="radio" name="q7" value="c"> Digital Naming System</label>
+                    <label><input type="radio" name="q7" value="d"> Domain Name System</label>
+                </div>
+                
+                <!-- Soal 8 -->
+                <div class="pertanyaan">
+                    <p>8. Perangkat keras yang berfungsi menghubungkan dua jaringan atau lebih adalah …</p>
+                    <label><input type="radio" name="q8" value="a"> Router</label>
+                    <label><input type="radio" name="q8" value="b"> Hub</label>
+                    <label><input type="radio" name="q8" value="c"> NIC</label>
+                    <label><input type="radio" name="q8" value="d"> Modem</label>
+                </div>
+
+                <!-- Soal 9 -->
+                <div class="pertanyaan">
+                    <p>9. Perangkat lunak yang berfungsi melindungi jaringan dari akses tidak sah disebut …</p>
+                    <label><input type="radio" name="q9" value="a"> Antivirus</label>
+                    <label><input type="radio" name="q9" value="b"> Firewall</label>
+                    <label><input type="radio" name="q9" value="c"> Malware</label>
+                    <label><input type="radio" name="q9" value="d"> Enkripsi</label>
+                </div>
+                
+                <!-- Soal 10 -->
+                <div class="pertanyaan">
+                    <p>10. Jaringan pribadi yang terbentuk saat Anda mengaktifkan hotspot HP ke laptop adalah contoh dari …</p>
+                    <label><input type="radio" name="q10" value="a"> LAN</label>
+                    <label><input type="radio" name="q10" value="b"> MAN</label>
+                    <label><input type="radio" name="q10" value="c"> WAN</label>
+                    <label><input type="radio" name="q10" value="d"> PAN</label>
+                </div>
+
+                <button type="button" class="tombol" onclick="periksaKuis()">Periksa Jawaban</button>
+            </form>
+
+            <!-- Div untuk menampilkan hasil kuis -->
+            <div id="hasilKuis"></div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Belajar Jaringan Komputer dan Internet</p>
+    </footer>
+
+    <!-- Awal dari JavaScript Internal -->
+    <script>
+        // --- Logika Navigasi Halaman (SPA) ---
+        
+        // Fungsi untuk menampilkan halaman berdasarkan ID
+        function tampilkanHalaman(idHalaman, elemenLink) {
+            // 1. Sembunyikan semua halaman
+            const semuaHalaman = document.querySelectorAll('.halaman');
+            semuaHalaman.forEach(halaman => {
+                halaman.classList.remove('aktif');
+            });
+
+            // 2. Tampilkan halaman yang dipilih
+            const halamanAktif = document.getElementById(idHalaman);
+            if (halamanAktif) {
+                // Menunda sedikit agar transisi 'display' tidak bentrok dengan animasi
+                setTimeout(() => {
+                    halamanAktif.classList.add('aktif');
+                }, 0);
+            }
+
+            // 3. Atur status 'aktif' pada link navigasi
+            const semuaLink = document.querySelectorAll('.nav-link');
+            semuaLink.forEach(link => {
+                link.classList.remove('aktif');
+            });
+            
+            // Jika fungsi dipanggil oleh klik link (elemenLink ada)
+            if (elemenLink) {
+                elemenLink.classList.add('aktif');
+            } else {
+                // Jika dipanggil oleh tombol 'Mulai Belajar' atau logo,
+                // cari link yang sesuai berdasarkan idHalaman
+                const linkAktif = document.querySelector(`.nav-link[onclick="tampilkanHalaman('${idHalaman}', this)"]`);
+                if (linkAktif) {
+                    linkAktif.classList.add('aktif');
+                }
+            }
+
+            // 4. Bawa tampilan ke atas halaman
+            window.scrollTo(0, 0);
+
+            // 5. Tutup menu mobile (jika sedang terbuka)
+            const navMenu = document.getElementById('nav-menu');
+            if (navMenu.classList.contains('terbuka')) {
+                navMenu.classList.remove('terbuka');
+            }
+        }
+
+        // --- Logika Menu Mobile (Hamburger) ---
+        function toggleMenu() {
+            const navMenu = document.getElementById('nav-menu');
+            navMenu.classList.toggle('terbuka');
+        }
+
+        // --- Logika Kuis Interaktif ---
+        
+        function periksaKuis() {
+            let skor = 0;
+            const totalSoal = 10;
+            
+            // Kunci jawaban (sesuaikan dengan urutan soal)
+            // q1=b, q2=b, q3=a, q4=c, q5=c, q6=d, q7=d, q8=a, q9=b, q10=d
+            const jawabanBenar = ['b', 'b', 'a', 'c', 'c', 'd', 'd', 'a', 'b', 'd'];
+            
+            const form = document.getElementById('kuisForm');
+            const hasilKuisDiv = document.getElementById('hasilKuis');
+            
+            // Loop untuk setiap soal dari 1 sampai 10
+            for (let i = 1; i <= totalSoal; i++) {
+                const namaSoal = 'q' + i; // nama grup radio (q1, q2, ...)
+                
+                // Dapatkan radio button yang dipilih untuk soal ini
+                const pilihan = form.elements[namaSoal];
+                let jawabanPengguna = null;
+                
+                if (pilihan) {
+                    // Cari nilai dari radio yang di-check
+                    for (let j = 0; j < pilihan.length; j++) {
+                        if (pilihan[j].checked) {
+                            jawabanPengguna = pilihan[j].value;
+                            break;
+                        }
+                    }
+                }
+
+                // Periksa apakah jawaban pengguna sama dengan kunci jawaban
+                if (jawabanPengguna === jawabanBenar[i - 1]) {
+                    skor++;
+                }
+            }
+            
+            // Tampilkan hasil skor
+            const persentase = (skor / totalSoal) * 100;
+            hasilKuisDiv.innerHTML = `Skor Anda: <strong>${skor} dari ${totalSoal}</strong> (${persentase}%)`;
+            
+            // Beri feedback berdasarkan skor
+            if (persentase >= 70) {
+                hasilKuisDiv.innerHTML += '<br>Luar biasa! Pemahaman Anda sangat baik.';
+                hasilKuisDiv.className = 'sukses'; // Terapkan kelas CSS 'sukses'
+            } else {
+                hasilKuisDiv.innerHTML += '<br>Terus belajar! Coba baca kembali materi dan ulangi kuis.';
+                hasilKuisDiv.className = 'gagal'; // Terapkan kelas CSS 'gagal'
+            }
+
+            // Tampilkan div hasil dan scroll ke sana
+            hasilKuisDiv.style.display = 'block';
+            hasilKuisDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Set halaman default saat dokumen pertama kali dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            tampilkanHalaman('beranda', document.querySelector('.nav-link.aktif'));
+        });
+
+    </script>
+    <!-- Akhir dari JavaScript Internal -->
+
+</body>
+</html>
+
